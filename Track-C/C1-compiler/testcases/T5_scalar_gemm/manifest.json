@@ -1,0 +1,93 @@
+{
+  "name": "T5_scalar_gemm",
+  "category": "T5_scalar_gemm",
+  "kernel": "scalar_gemm",
+  "gridDim": [
+    8,
+    8,
+    1
+  ],
+  "blockDim": [
+    16,
+    16,
+    1
+  ],
+  "dynamic_smem_bytes": 0,
+  "params": [
+    {
+      "name": "param_A",
+      "type": "u64",
+      "kind": "gmem_ptr",
+      "buffer": "A"
+    },
+    {
+      "name": "param_B",
+      "type": "u64",
+      "kind": "gmem_ptr",
+      "buffer": "B"
+    },
+    {
+      "name": "param_C",
+      "type": "u64",
+      "kind": "gmem_ptr",
+      "buffer": "C"
+    },
+    {
+      "name": "param_M",
+      "type": "u32",
+      "kind": "value",
+      "value": 128
+    },
+    {
+      "name": "param_N",
+      "type": "u32",
+      "kind": "value",
+      "value": 128
+    },
+    {
+      "name": "param_K",
+      "type": "u32",
+      "kind": "value",
+      "value": 128
+    }
+  ],
+  "buffers": {
+    "A": {
+      "dtype": "f32",
+      "shape": [
+        128,
+        128
+      ],
+      "layout": "row_major",
+      "init": "rand_uniform",
+      "seed": 12
+    },
+    "B": {
+      "dtype": "f32",
+      "shape": [
+        128,
+        128
+      ],
+      "layout": "row_major",
+      "init": "rand_uniform",
+      "seed": 13
+    },
+    "C": {
+      "dtype": "f32",
+      "shape": [
+        128,
+        128
+      ],
+      "layout": "row_major",
+      "init": "zero",
+      "output": true
+    }
+  },
+  "check": {
+    "type": "matmul",
+    "formula": "C = A @ B",
+    "output": "C",
+    "atol": 0.0001,
+    "rtol": 0.0001
+  }
+}

@@ -1,0 +1,49 @@
+.version 9.3
+.target sm_90
+.address_size 64
+
+.visible .entry repeated_expression(
+    .param .u64 param_x,
+    .param .u64 param_y,
+    .param .u64 param_out,
+    .param .u32 param_n
+)
+{
+    .reg .pred %p<2>;
+    .reg .u32  %r<8>;
+    .reg .u64  %rd<10>;
+    .reg .f32  %f<10>;
+
+    ld.param.u64 %rd1, [param_x];
+    ld.param.u64 %rd2, [param_y];
+    ld.param.u64 %rd3, [param_out];
+    ld.param.u32 %r1,  [param_n];
+
+    mov.u32 %r2, %tid.x;
+    mov.u32 %r3, %ctaid.x;
+    mov.u32 %r4, %ntid.x;
+    mad.lo.u32 %r5, %r3, %r4, %r2;
+
+    setp.ge.u32 %p1, %r5, %r1;
+    @%p1 bra DONE;
+
+    mul.wide.u32 %rd4, %r5, 4;
+    add.u64 %rd5, %rd1, %rd4;
+    add.u64 %rd6, %rd2, %rd4;
+    add.u64 %rd7, %rd3, %rd4;
+
+    ld.global.f32 %f1, [%rd5];
+    ld.global.f32 %f2, [%rd6];
+
+    add.f32 %f3, %f1, %f2;
+    add.f32 %f4, %f1, %f2;
+    mul.f32 %f5, %f3, %f4;
+
+    mul.f32 %f8, %f1, %f2;
+
+    add.f32 %f6, %f5, %f1;
+    st.global.f32 [%rd7], %f6;
+
+DONE:
+    ret;
+}

@@ -1,26 +1,26 @@
-.version 7.0
-.target sm_70
+.version 9.3
+.target sm_90
 .address_size 64
 
-.visible .entry reg_schedule(
+.visible .entry mixed_load_compute(
     .param .u64 param_a,
     .param .u64 param_b,
     .param .u64 param_c,
     .param .u64 param_d,
-    .param .u64 param_y,
+    .param .u64 param_out,
     .param .u32 param_n
 )
 {
     .reg .pred %p<2>;
-    .reg .b32  %r<8>;
-    .reg .b64  %rd<24>;
-    .reg .f32  %f<32>;
+    .reg .u32  %r<8>;
+    .reg .u64  %rd<16>;
+    .reg .f32  %f<16>;
 
     ld.param.u64 %rd1, [param_a];
     ld.param.u64 %rd2, [param_b];
     ld.param.u64 %rd3, [param_c];
     ld.param.u64 %rd4, [param_d];
-    ld.param.u64 %rd5, [param_y];
+    ld.param.u64 %rd5, [param_out];
     ld.param.u32 %r1,  [param_n];
 
     mov.u32 %r2, %tid.x;
@@ -32,7 +32,6 @@
     @%p1 bra DONE;
 
     mul.wide.u32 %rd6, %r5, 4;
-
     add.u64 %rd7,  %rd1, %rd6;
     add.u64 %rd8,  %rd2, %rd6;
     add.u64 %rd9,  %rd3, %rd6;
@@ -40,32 +39,20 @@
     add.u64 %rd11, %rd5, %rd6;
 
     ld.global.f32 %f1, [%rd7];
-    add.f32 %f20, %f8, %f9;
-
     ld.global.f32 %f2, [%rd8];
-    mul.f32 %f21, %f10, %f11;
-
     ld.global.f32 %f3, [%rd9];
-    add.f32 %f22, %f12, %f13;
-
     ld.global.f32 %f4, [%rd10];
 
     add.f32 %f5, %f1, %f2;
-    add.f32 %f6, %f3, %f4;
+    sub.f32 %f6, %f3, %f4;
+    mul.f32 %f7, %f5, %f6;
 
-    sub.f32 %f7, %f1, %f2;
-    sub.f32 %f8, %f3, %f4;
+    mul.f32 %f8, %f1, %f3;
+    add.f32 %f9, %f2, %f4;
+    mul.f32 %f10, %f8, %f9;
 
-    mul.f32 %f9,  %f5, %f6;
-    mul.f32 %f10, %f7, %f8;
-    mul.f32 %f11, %f1, %f3;
-    mul.f32 %f12, %f2, %f4;
-
-    add.f32 %f13, %f9, %f10;
-    add.f32 %f14, %f11, %f12;
-    add.f32 %f15, %f13, %f14;
-
-    st.global.f32 [%rd11], %f15;
+    add.f32 %f11, %f7, %f10;
+    st.global.f32 [%rd11], %f11;
 
 DONE:
     ret;

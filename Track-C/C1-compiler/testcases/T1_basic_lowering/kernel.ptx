@@ -1,5 +1,5 @@
-.version 7.0
-.target sm_70
+.version 9.3
+.target sm_90
 .address_size 64
 
 .visible .entry vector_add(
@@ -10,8 +10,8 @@
 )
 {
     .reg .pred %p<2>;
-    .reg .b32  %r<6>;
-    .reg .b64  %rd<10>;
+    .reg .u32  %r<8>;
+    .reg .u64  %rd<10>;
     .reg .f32  %f<4>;
 
     ld.param.u64 %rd1, [param_a];

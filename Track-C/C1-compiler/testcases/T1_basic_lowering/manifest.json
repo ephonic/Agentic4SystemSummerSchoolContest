@@ -1,0 +1,69 @@
+{
+  "name": "T1_vector_add",
+  "category": "T1_basic_lowering",
+  "kernel": "vector_add",
+  "gridDim": [
+    4096,
+    1,
+    1
+  ],
+  "blockDim": [
+    256,
+    1,
+    1
+  ],
+  "dynamic_smem_bytes": 0,
+  "params": [
+    {
+      "name": "param_a",
+      "type": "u64",
+      "kind": "gmem_ptr",
+      "buffer": "a"
+    },
+    {
+      "name": "param_b",
+      "type": "u64",
+      "kind": "gmem_ptr",
+      "buffer": "b"
+    },
+    {
+      "name": "param_c",
+      "type": "u64",
+      "kind": "gmem_ptr",
+      "buffer": "c"
+    },
+    {
+      "name": "param_n",
+      "type": "u32",
+      "kind": "value",
+      "value": 1048576
+    }
+  ],
+  "buffers": {
+    "a": {
+      "dtype": "f32",
+      "numel": 1048576,
+      "init": "rand_uniform",
+      "seed": 1
+    },
+    "b": {
+      "dtype": "f32",
+      "numel": 1048576,
+      "init": "rand_uniform",
+      "seed": 2
+    },
+    "c": {
+      "dtype": "f32",
+      "numel": 1048576,
+      "init": "zero",
+      "output": true
+    }
+  },
+  "check": {
+    "type": "elementwise",
+    "formula": "c[i] = a[i] + b[i]",
+    "output": "c",
+    "atol": 1e-06,
+    "rtol": 1e-06
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "name": "T3_repeated_global_load",
+  "category": "T3_memory_reuse",
+  "kernel": "repeated_global_load",
+  "gridDim": [
+    2048,
+    1,
+    1
+  ],
+  "blockDim": [
+    256,
+    1,
+    1
+  ],
+  "dynamic_smem_bytes": 0,
+  "params": [
+    {
+      "name": "param_x",
+      "type": "u64",
+      "kind": "gmem_ptr",
+      "buffer": "x"
+    },
+    {
+      "name": "param_y",
+      "type": "u64",
+      "kind": "gmem_ptr",
+      "buffer": "y"
+    },
+    {
+      "name": "param_z",
+      "type": "u64",
+      "kind": "gmem_ptr",
+      "buffer": "z"
+    },
+    {
+      "name": "param_out",
+      "type": "u64",
+      "kind": "gmem_ptr",
+      "buffer": "out"
+    },
+    {
+      "name": "param_n",
+      "type": "u32",
+      "kind": "value",
+      "value": 524288
+    }
+  ],
+  "buffers": {
+    "x": {
+      "dtype": "f32",
+      "numel": 524288,
+      "init": "rand_uniform",
+      "seed": 5
+    },
+    "y": {
+      "dtype": "f32",
+      "numel": 524288,
+      "init": "rand_uniform",
+      "seed": 6
+    },
+    "z": {
+      "dtype": "f32",
+      "numel": 524288,
+      "init": "rand_uniform",
+      "seed": 7
+    },
+    "out": {
+      "dtype": "f32",
+      "numel": 524288,
+      "init": "zero",
+      "output": true
+    }
+  },
+  "check": {
+    "type": "elementwise",
+    "formula": "out[i] = x[i] * y[i] + x[i] * z[i]",
+    "output": "out",
+    "atol": 1e-05,
+    "rtol": 1e-05
+  }
+}

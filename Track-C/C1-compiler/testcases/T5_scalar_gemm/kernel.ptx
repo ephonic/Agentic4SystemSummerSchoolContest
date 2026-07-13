@@ -1,0 +1,75 @@
+.version 9.3
+.target sm_90
+.address_size 64
+
+.visible .entry scalar_gemm(
+    .param .u64 param_A,
+    .param .u64 param_B,
+    .param .u64 param_C,
+    .param .u32 param_M,
+    .param .u32 param_N,
+    .param .u32 param_K
+)
+{
+    .reg .pred %p<5>;
+    .reg .u32  %r<32>;
+    .reg .u64  %rd<32>;
+    .reg .f32  %f<8>;
+
+    ld.param.u64 %rd1, [param_A];
+    ld.param.u64 %rd2, [param_B];
+    ld.param.u64 %rd3, [param_C];
+    ld.param.u32 %r1,  [param_M];
+    ld.param.u32 %r2,  [param_N];
+    ld.param.u32 %r3,  [param_K];
+
+    mov.u32 %r4, %tid.x;
+    mov.u32 %r5, %ctaid.x;
+    mov.u32 %r6, %ntid.x;
+    mad.lo.u32 %r7, %r5, %r6, %r4;
+
+    mov.u32 %r8, %tid.y;
+    mov.u32 %r9, %ctaid.y;
+    mov.u32 %r10, %ntid.y;
+    mad.lo.u32 %r11, %r9, %r10, %r8;
+
+    setp.ge.u32 %p1, %r11, %r1;
+    @%p1 bra DONE;
+    setp.ge.u32 %p2, %r7, %r2;
+    @%p2 bra DONE;
+
+    mad.lo.u32 %r12, %r11, %r2, %r7;
+    mul.wide.u32 %rd4, %r12, 4;
+    add.u64 %rd5, %rd3, %rd4;
+
+    ld.global.f32 %f1, [%rd5];
+
+    mov.u32 %r13, 0;
+    mov.u32 %r14, 1;
+
+LOOP:
+    setp.ge.u32 %p3, %r13, %r3;
+    @%p3 bra STORE;
+
+    mad.lo.u32 %r15, %r11, %r3, %r13;
+    mul.wide.u32 %rd6, %r15, 4;
+    add.u64 %rd7, %rd1, %rd6;
+
+    mad.lo.u32 %r16, %r13, %r2, %r7;
+    mul.wide.u32 %rd8, %r16, 4;
+    add.u64 %rd9, %rd2, %rd8;
+
+    ld.global.f32 %f2, [%rd7];
+    ld.global.f32 %f3, [%rd9];
+    mul.f32 %f4, %f2, %f3;
+    add.f32 %f1, %f1, %f4;
+
+    add.u32 %r13, %r13, %r14;
+    bra LOOP;
+
+STORE:
+    st.global.f32 [%rd5], %f1;
+
+DONE:
+    ret;
+}
