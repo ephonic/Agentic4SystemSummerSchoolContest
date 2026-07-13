@@ -11,6 +11,10 @@
 | C2 | 主机侧驱动与 Runtime | [spec.md](C2-runtime/spec.md) | [scoring.md](C2-runtime/scoring.md) | [starter-kit/](C2-runtime/starter-kit/) |
 | C3 | 算子调度与模型部署 | [spec.md](C3-scheduler/spec.md) | [scoring.md](C3-scheduler/scoring.md) | [testcases/](C3-scheduler/testcases/) |
 
+## 性能参考目标参数
+
+Track-C 各子题（C1/C2/C3）均可参考统一的性能目标参数进行优化，详见：[hint.md](hint.md)
+
 ## 赛道总览
 
 赛道 C 聚焦于 **AEC GPGPU 的软件栈**，从编译器到底层驱动再到高层算子调度：
