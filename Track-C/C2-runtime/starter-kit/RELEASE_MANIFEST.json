@@ -80,7 +80,7 @@
     "kernels/images/image_788739.aecbin": "a1c14117d30178551de1b173554030102e1680559439f15384cec5fb5546c676",
     "kernels/images/image_788995.aecbin": "7526f6a709012d3558f93eb804f888fa7d0309da1c7f66536296ec355f18e81a",
     "kernels/manifest.json": "d43b5e6ecaab9e898b516abadd607551b79ecf63f20f846ebd3663e07dca5379",
-    "lib/libaec_device.so": "295c47c51354a2e58b76cff18633b15daeea9f2e0e4115dccda338a9e66b01d5",
+    "lib/libaec_device.so": "b96b09e88ae160b659cf72bd079da8bc647d2bc55d377297a649d77c30ddcb0a",
     "schemas/dma_agent_input.schema.json": "bfb272ff6fff19a42b8776ce9f2c61b4a2fd5a06816218ad6c108efbe04b6572",
     "schemas/dma_agent_output.schema.json": "bd690495f15f037f1ad03f1fa4480f7a3d97bde4c8cf376e327754755d4ddc87",
     "schemas/kernel_agent_input.schema.json": "eacf973c4865755a9036fc1b57a175fd8e5e50843bf50fbf8407ae7849ec2449",
