@@ -281,6 +281,14 @@
 
 ---
 
+## 决赛题目：U280-GPGPU 集成设计
+
+> 本赛道面向完成初赛并进入决赛的队伍，要求在单张 Alveo U280 FPGA 上实现完整的可编程 GPGPU 原型系统。
+
+决赛题目要求在 U280 FPGA 上完成 GPGPU 的全栈集成设计：基于 AEC 128-bit 定长 ISA，实现可综合的 RTL 设计（SIMT 执行、FP8 GEMM、寄存器堆、存储层级、SFU），配合 PTX→AEC 编译器、XDMA 驱动/runtime 和 PyTorch 后端，在 ResNet-50/Transformer 等端到端模型上完成板上验证与性能评测。详见 [决赛题目](Final/contest.md)。
+
+---
+
 ## 开发与评测环境
 
 | 工具 | 版本 | 适用赛道 |
