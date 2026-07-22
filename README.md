@@ -97,6 +97,8 @@
 | [Track-B](Track-B/) | GPGPU RTL 设计 | 单一赛题 | 100 分 |
 | [Track-C](Track-C/) | 编译器 & Runtime | C1 + C2 + C3 | 100 分（归一化） |
 
+> Final 综合赛题已更新：详见 [Final/contest.md](Final/contest.md)。本次更新明确 AEC-G ISA 固定硬件接口、固定 CUDA-like runtime 接口，以及 PyTorch 优化算子库/端到端调度、PTX-to-AEC 编译工具链、XDMA runtime/driver 和 U280 RTL 提交要求。
+
 ---
 
 ## 赛道 A：EDA 软件
